@@ -204,17 +204,18 @@ const AnimalFetchSlider = ({ data }: Props) => {
             <IoIosArrowBack size="30px" />
           </IconButton>
           <Slider {...settings} ref={(slider) => setSlider(slider)}>
-            {data.map((animalInfo) => (
-              <>
+            {data.map((animalInfo, index) => (
+              <React.Fragment key={animalInfo.id}>
                 <Box
-                  key={animalInfo.id}
+                  key={index}
                   height={{ base: "95%", lg: "95%" }}
                   width={"90%"}
                   position={"relative"}
                   m={"0 auto"}
                 >
-                  <Link href={`animals/${animalInfo.id}`}>
+                  <Link  href={`animals/${animalInfo.id}`}>
                     <Card
+                      
                       id={animalInfo.id}
                       direction={{ base: "column", md: "row", xl: "column" }}
                       my={4}
@@ -229,7 +230,7 @@ const AnimalFetchSlider = ({ data }: Props) => {
                         alignSelf={"center"}
                         m={{ base: 2 }}
                       />
-                      <CardBody>
+                      <CardBody key={animalInfo.id}>
                         <Stack>
                           <Heading
                             fontSize={{
@@ -253,6 +254,7 @@ const AnimalFetchSlider = ({ data }: Props) => {
                         </Stack>
                         <Divider my={3} />
                         <Button
+                          key={animalInfo.id}
                           variant="solid"
                           colorScheme="green"
                           onClick={() => {
@@ -266,7 +268,7 @@ const AnimalFetchSlider = ({ data }: Props) => {
                     </Card>
                   </Link>
                 </Box>
-              </>
+              </React.Fragment>
             ))}
           </Slider>
         </Box>
