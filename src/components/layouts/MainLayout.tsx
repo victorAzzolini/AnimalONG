@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const MainLayout = ({ children }: Props) => {
+const MainLayout = ({ children }: any) => {
   return (
     <>
       <Header />
