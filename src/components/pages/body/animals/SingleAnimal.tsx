@@ -72,8 +72,9 @@ const SingleAnimal = (data: Animal) => {
                       flexWrap={"wrap"}
                       gap={4}
                     >
-                      {data.images.map((image) => (
+                      {data.images.map((image, index) => (
                         <Image
+                          key={index}
                           src={`/uploads/images/${image}
                         `}
                           minW={"30vw"}

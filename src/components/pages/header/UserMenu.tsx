@@ -13,23 +13,20 @@ import {
 } from "@chakra-ui/react";
 
 import { signOut, useSession } from "next-auth/react";
-import { User } from "next-auth";
-import axios from "axios";
+import { User } from "@prisma/client";
+
 
 const UserMenu = () => {
-  const [user, setUser] = useState<User | any>();
- 
-  useEffect(() => {
-    axios.get("api/getuser").then((res) => {
-      setUser(res.data);
-    });
-    
-  }, []);
+  const {data: session} = useSession()
+  const user = session?.user as User
+
+
+  
 
   return (
     <Menu>
       <MenuButton>
-        {user?.images?.length > 0 ? (
+        {/* {user ? (
           <Avatar
             size={{ md: "lg", base: "md" }}
             bg={"green.700"}
@@ -37,7 +34,7 @@ const UserMenu = () => {
           />
         ) : (
           <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
-        )}
+        )} */}
       </MenuButton>
       <MenuList alignItems={"center"}>
         <Flex
@@ -45,7 +42,7 @@ const UserMenu = () => {
           gap={{ base: 0, md: 4 }}
           p={{ base: 1, md: 3 }}
         >
-          {user?.images?.length > 0 ? (
+          {/* {user ? (
             <Avatar
               size={{ md: "lg", base: "md" }}
               bg={"green.700"}
@@ -53,7 +50,7 @@ const UserMenu = () => {
             />
           ) : (
             <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
-          )}
+          )} */}
           <Stack>
             <Text
               color={"forest.400"}

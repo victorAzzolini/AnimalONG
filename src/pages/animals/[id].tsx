@@ -22,21 +22,14 @@ const SingleAnimalBack = ({ data }: { data: Animal }) => {
 
 export default SingleAnimalBack;
 
-export async function getStaticPaths() {
-  const res = await prisma.animal.findMany({});
+export async function getServerSideProps(context: any) {
+ 
+  const id = context.req.url.substring(9)
+  console.log(id)
 
-  const data = res;
-
-  const paths = data.map((animal: Animal) => ({
-    params: { id: animal.id.toString() },
-  }));
-  return { paths, fallback: true };
-}
-
-export async function getStaticProps({ params }: Paths) {
   const res = await prisma.animal.findUnique({
     where: {
-      id: params.id,
+      id: id,
     },
     select: {
       id: true,
