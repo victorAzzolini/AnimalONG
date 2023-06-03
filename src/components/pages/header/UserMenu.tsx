@@ -9,6 +9,7 @@ import {
   Text,
   Flex,
   Stack,
+  Avatar,
 } from "@chakra-ui/react";
 
 import { signOut, useSession } from "next-auth/react";
@@ -25,7 +26,7 @@ const UserMenu = () => {
   return (
     <Menu>
       <MenuButton>
-        {/* {user ? (
+        {user ? (
           <Avatar
             size={{ md: "lg", base: "md" }}
             bg={"green.700"}
@@ -33,7 +34,7 @@ const UserMenu = () => {
           />
         ) : (
           <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
-        )} */}
+        )}
       </MenuButton>
       <MenuList alignItems={"center"}>
         <Flex
@@ -41,7 +42,7 @@ const UserMenu = () => {
           gap={{ base: 0, md: 4 }}
           p={{ base: 1, md: 3 }}
         >
-          {/* {user ? (
+          {user ? (
             <Avatar
               size={{ md: "lg", base: "md" }}
               bg={"green.700"}
@@ -49,7 +50,7 @@ const UserMenu = () => {
             />
           ) : (
             <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
-          )} */}
+          )}
           <Stack>
             <Text
               color={"forest.400"}
