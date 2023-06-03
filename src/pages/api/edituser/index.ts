@@ -31,12 +31,12 @@ const handler = async (
   }
 
   try {
-    const { fields, files } = await parseForm(req);
+    const { fields, files }: any = await parseForm(req);
     const token = await getToken({ req, secret });
 
     console.log({ fields, files });
 
-    const { name, email, password, confirmPassword } = fields;
+    const { name, email, password, confirmPassword }: {name: string, email: string, password: string, confirmPassword: string} = fields;
 
     console.log(fields.hashedPassword);
 
