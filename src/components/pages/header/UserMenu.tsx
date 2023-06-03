@@ -15,14 +15,26 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { User } from "@prisma/client";
 
+
 const UserMenu = () => {
-  const { data: session } = useSession();
-  const user = session?.user as User;
+  const {data: session} = useSession()
+  const user = session?.user as User
+
+
+  
 
   return (
     <Menu>
       <MenuButton>
-        <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
+        {user ? (
+          <Avatar
+            size={{ md: "lg", base: "md" }}
+            bg={"green.700"}
+            src={`uploads/images/${user?.images[0]}`}
+          />
+        ) : (
+          <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
+        )}
       </MenuButton>
       <MenuList alignItems={"center"}>
         <Flex
@@ -30,8 +42,15 @@ const UserMenu = () => {
           gap={{ base: 0, md: 4 }}
           p={{ base: 1, md: 3 }}
         >
-          <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
-
+          {user ? (
+            <Avatar
+              size={{ md: "lg", base: "md" }}
+              bg={"green.700"}
+              src={`uploads/images/${user?.images[0]}`}
+            />
+          ) : (
+            <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
+          )}
           <Stack>
             <Text
               color={"forest.400"}
