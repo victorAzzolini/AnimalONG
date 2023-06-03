@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && <actual-build-command>"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
