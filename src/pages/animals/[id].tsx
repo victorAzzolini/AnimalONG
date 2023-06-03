@@ -20,7 +20,7 @@ const SingleAnimalBack = ({data}: {data: Animal}) => {
 export default SingleAnimalBack;
 
 export async function getStaticPaths() {
-  const res = await axios.get(`${process.env.MY_VARIABLE_API}/api/getanimals`);
+  const res = await axios.get(`/api/getanimals`);
 
   const data = res.data.data;
 
@@ -31,7 +31,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }: Paths) {
-  const res = await axios.get(`${process.env.MY_VARIABLE_API}/api/getanimals/${params.id}`);
+  const res = await axios.get(`/api/getanimals/${params.id}`);
 
   const data = res.data.data;
 

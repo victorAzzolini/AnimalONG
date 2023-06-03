@@ -20,7 +20,7 @@ const AnimalsLandingPage = ({ data }: Props) => {
 export default AnimalsLandingPage;
 
 export async function getStaticProps() {
-  const res = await axios.get(`${process.env.MY_VARIABLE_API}/api/getanimals`);
+  const res = await axios.get(`/api/getanimals`);
   const data = res.data;
 
   return {
