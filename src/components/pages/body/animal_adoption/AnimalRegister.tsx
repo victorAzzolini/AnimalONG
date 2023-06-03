@@ -120,7 +120,7 @@ const AnimalRegister = () => {
   return (
     <Flex minH={"100vh"} justifyContent={"center"}>
       <Box
-        backgroundImage={"url(/monkey.jpg)"}
+        backgroundImage={"url(/Monkey.jpg)"}
         backgroundRepeat={"no-repeat"}
         backgroundPosition={"center center"}
         backgroundSize={"cover"}
