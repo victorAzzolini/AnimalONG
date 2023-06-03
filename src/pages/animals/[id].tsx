@@ -1,7 +1,4 @@
 import React from "react";
-import axios from "axios";
-import { AuthOptions } from "next-auth";
-import { getServerSession } from "next-auth";
 import prisma from "@/libs/prismadb";
 
 import SingleAnimal from "@/components/pages/body/animals/SingleAnimal";

@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 
 import prisma from "@/libs/prismadb";
 import { NextApiRequest, NextApiResponse } from "next";
-import { error } from "console";
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   const { email, name, password, confirmPassword } = req.body;

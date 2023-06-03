@@ -27,10 +27,6 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
         return
     }
 
-    // const token = signJwtAcessToken({
-    //     name: user?.name,
-    //     id: user?.id 
-    // })
 
     return res.status(200).json({user: user?.name, id: user?.id})
 }

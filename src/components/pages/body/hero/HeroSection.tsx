@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AspectRatio, Text, Box, Flex, Image } from "@chakra-ui/react";
+import { AspectRatio, Text, Box, Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 const animatedFlex = {

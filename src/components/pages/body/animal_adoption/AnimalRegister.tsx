@@ -4,7 +4,6 @@ import axios from "axios";
 import {
   Flex,
   Box,
-  Text,
   Image,
   FormControl,
   FormLabel,

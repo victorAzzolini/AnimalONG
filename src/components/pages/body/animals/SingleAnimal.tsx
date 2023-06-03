@@ -23,7 +23,7 @@ import { Animal } from "@prisma/client";
 import React from "react";
 
 const SingleAnimal = (data: Animal) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose } = useDisclosure();
   
   return (
     <>

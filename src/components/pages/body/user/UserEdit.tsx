@@ -5,12 +5,9 @@ import { useSession } from "next-auth/react";
 import {
   Flex,
   Box,
-  Text,
-  Image,
   FormControl,
   FormLabel,
   Input,
-  Textarea,
   Heading,
   Button,
   Stack,
@@ -26,7 +23,7 @@ const UserEdit = () => {
   const [user, setUser] = useState<User | any>({});
   const [previewImage, setPreviewImage] = useState<string | File[] | any>();
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
-  const { data: session, status, update } = useSession();
+  const { data: session, update } = useSession();
 
   useEffect(() => {
     axios.get("api/getuser").then((res) => {

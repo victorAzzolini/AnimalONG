@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { getToken } from "next-auth/jwt";
 import {
   Box,
   Button,

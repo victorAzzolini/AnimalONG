@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import prisma from "@/libs/prismadb";
-import { Animal } from "@prisma/client";
 
 const secret = process.env.NEXTAUTH_SECRET;
 

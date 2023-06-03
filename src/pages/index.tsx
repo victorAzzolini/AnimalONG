@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { Props } from "./animals";
-import axios from "axios";
+import prisma from "@/libs/prismadb";
 
 import HeroSection from "@/components/pages/body/hero/HeroSection";
 import CallToAction from "@/components/pages/body/CallToAction";
@@ -26,13 +26,27 @@ export default function Home({ data }: Props) {
   );
 }
 
-export async function getStaticProps() {
-  const res = await axios.get(`${process.env.MY_VARIABLE_API}/api/getanimals`);
-  const data = res.data;
+export async function getServerSideProps() {
+  try {
+    const res = await prisma.animal.findMany({
+      select: {
+        id: true,
+        name: true,
+        intAge: true,
+        description: true,
+        resumeDescription: true,
+        images: true,
+      },
+    });
 
-  return {
-    props: {
-      data: data.data,
-    },
-  };
+    const data = res;
+
+    return {
+      props: {
+        data,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
