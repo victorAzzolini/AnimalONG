@@ -35,9 +35,7 @@ const handler = async (
 
     console.log({ files, fields });
 
-    const { name, age, description, resumeDescription } = fields;
-
-    console.log(typeof age);
+    const { name, age, description, resumeDescription }: any  = fields;
 
     if (!name) {
       res
