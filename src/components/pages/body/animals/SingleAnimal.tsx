@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -18,13 +19,45 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
+  IconButton,
+  useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import { Animal } from "@prisma/client";
-import React from "react";
+import Link from "next/link";
+import { MdPix } from "react-icons/md";
+import { AiOutlineCopy } from "react-icons/ai";
 
 const SingleAnimal = (data: Animal) => {
-  const { isOpen, onClose } = useDisclosure();
-  
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast({
+    position: "top",
+  });
+
+  async function handleSubmit(animalId: string) {
+    const updateAnimalId = {
+      id: animalId,
+    };
+    await axios
+      .patch("/api/adoptions", updateAnimalId)
+      .then((res) => {
+        toast({
+          title: "Animal registrado com sucesso",
+          status: "success",
+          isClosable: true,
+        });
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast({
+          title: err.response.data.error,
+          status: "error",
+          isClosable: true,
+        });
+        onClose();
+      });
+  }
   return (
     <>
       <Flex
@@ -49,7 +82,7 @@ const SingleAnimal = (data: Animal) => {
             textAlign={"center"}
             py={{ base: 10 }}
           >
-            Conheça mais sobre <br />{" "}
+            Conheça mais sobre <br />
             <Text as={"span"} color={"green.400"}>
               {data.name}!
             </Text>
@@ -65,35 +98,41 @@ const SingleAnimal = (data: Animal) => {
               _last={{ mb: "10" }}
             >
               <Card direction={{ base: "column", md: "row" }} my={4}>
-                <CardBody>
+                <CardBody display={"flex"} flexDir={"column"}>
                   <Stack>
                     <Flex
                       justifyContent={"space-evenly"}
                       flexWrap={"wrap"}
-                      gap={4}
+                      gap={6}
                     >
                       {data.images.map((image, index) => (
                         <Image
                           key={index}
-                          src={`/uploads/images/${image}
-                        `}
-                          minW={"30vw"}
+                          src={`${image}`}
+                          minW={{base: "80%",md:"30%"}}
+                          maxW={"100px"}
                           boxSize={"250px"}
                           borderRadius={"lg"}
                           shadow={"lg"}
                         />
                       ))}
                     </Flex>
-                    <Text fontSize={{ base: "md" }} fontWeight={600}>
+                    <Text fontSize={{ base: "xl" }} fontWeight={600} py={4} px={{ md: 5}}>
                       {data.intAge} anos
                     </Text>
-                    <Text fontSize={{ base: "sm" }} minH={{ xl: "210px" }}>
+                    <Text fontSize={{ base: "lg" }} px={{ md: 5}} minH={{ xl: "210px" }} pb={2}>
                       {data.description}
                     </Text>
                   </Stack>
                   <Divider my={3} />
-                  <Button variant="solid" colorScheme="red">
-                    Cancelar
+                  <Button
+                    alignSelf={"center"}
+                    px={10}
+                    variant="solid"
+                    colorScheme="green"
+                    onClick={onOpen}
+                  >
+                    Apadrinhar
                   </Button>
                 </CardBody>
               </Card>
@@ -102,23 +141,56 @@ const SingleAnimal = (data: Animal) => {
         </Flex>
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent
+            as={Flex}
+            alignItems={"center"}
+            boxSize={{ base: "sm", md: "md", xl: "xl" }}
+            minWidth={{ xl: "580px" }}
+            maxH={{ xl: "430px" }}
+          >
+            <ModalHeader as={Flex} alignItems={"center"} gap={2}>
+              <MdPix size={"25px"} />
+              Digitalize o QR code
+            </ModalHeader>
             <ModalCloseButton />
-            <ModalHeader></ModalHeader>
+            <Divider w={"90%"} />
             <ModalBody
-              fontWeight={500}
-              fontSize={"xl"}
-              textAlign={"center"}
-              p={5}
+              as={Flex}
+              gap={2}
+              p={{ base: 2, xl: 5 }}
+              alignItems={"center"}
+              justifyItems={"center"}
+              fontSize={{ base: "sm", md: "lg", xl: "xl" }}
             >
-              Você tem certeza que deseja cancelar o apadrinhamento?
+              <Image
+                src={"/QRCode.png"}
+                boxSize={{ base: "160px", md: "200px", xl: "230px" }}
+              />
+              <Stack>
+                <Text>
+                  Esse é um QR code não é um link de pagamento, ele levará para
+                  meu portfólio
+                </Text>
+                <Link
+                  href="https://portfolio-v1-jade-nine.vercel.app/"
+                  target="_blank"
+                >
+                  <IconButton mr={2} aria-label={"copy-link"}>
+                    <AiOutlineCopy />
+                  </IconButton>
+                  Link do QR Code
+                </Link>
+                <Text>Clique em confirmar para adicionar o animal</Text>
+              </Stack>
             </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="green" mr={3}>
-                Sim
-              </Button>
-              <Button variant="ghost" onClick={onClose}>
-                Não
+            <Divider w={"90%"} />
+            <ModalFooter as={Flex} alignSelf={"flex-end"}>
+              <Button
+                onClick={() => handleSubmit(data.id)}
+                variant={"solid"}
+                colorScheme="green"
+              >
+                Confirmar
               </Button>
             </ModalFooter>
           </ModalContent>

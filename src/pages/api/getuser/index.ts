@@ -13,7 +13,6 @@ const getUserByToken = async function (
   }
 
   const token = await getToken({ req, secret });
-  console.log(token)
 
   try {
     const user = await prisma?.user.findUnique({

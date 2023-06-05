@@ -29,6 +29,7 @@ const UserEdit = () => {
     axios.get("api/getuser").then((res) => {
       setUser(res.data);
     });
+    console.log(user);
   }, [session]);
 
   const toast = useToast({
@@ -47,37 +48,37 @@ const UserEdit = () => {
   }
 
   function onFileChange(e: React.FormEvent<HTMLInputElement>) {
-    setUser({
-      ...user,
-      images: Array.from((e.target as HTMLInputElement).files as FileList),
-    });
-    setPreviewImage(
-      Array.from((e.target as HTMLInputElement).files as FileList)
-    );
+    setPreviewImage((e.target as HTMLInputElement).files![0] as File);
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const formData = new FormData();
+    if (previewImage && user.images.length > 0) {
+      setUser(user.images.shift());
+    }
 
-    await Object.keys(user).forEach((key) => {
-      if (key === "images") {
-        for (let i = 0; i < user[key].length; i++) {
-          formData.append("images", user[key][i]);
-        }
-      } else {
-        formData.append(key, user[key]);
-      }
-    });
+    const formData = new FormData();
+    formData.append("file", previewImage);
+    formData.append("upload_preset", "ropx9bzn");
+    formData.append("api_key", "299813126812596");
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dajjv0sfx/image/upload",
+        formData
+      );
+      console.log(response.data.secure_url);
+      setUser(user.images.push(response.data.secure_url));
+    } catch (error) {
+      console.error(error);
+    }
+
+    console.log(user);
 
     try {
       await axios
-        .patchForm("/api/edituser", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        .patch("/api/edituser", user)
         .then((res) => {
           toast({
             title: "Usuário atualizado com sucesso",
@@ -94,7 +95,9 @@ const UserEdit = () => {
             isClosable: true,
           });
         });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -124,23 +127,21 @@ const UserEdit = () => {
         </Heading>
 
         {user?.images?.length > 0 ? (
-          previewImage ? (
-            previewImage.map((image: File, index: number) => (
-              <Avatar
-                size={{ sm: "2xl", base: "xl" }}
-                bg={"green.700"}
-                src={URL.createObjectURL(image)}
-              />
-            ))
-          ) : (
-            <Avatar
-              size={{ md: "2xl", base: "xl" }}
-              bg={"green.700"}
-              src={`uploads/images/${user.images[0]}`}
-            />
-          )
+          <Avatar
+            size={{ md: "2xl", base: "xl" }}
+            bg={"green.700"}
+            src={
+              previewImage
+                ? URL.createObjectURL(previewImage)
+                : `${user.images[0]}`
+            }
+          />
         ) : (
-          <Avatar size={{ md: "2xl", base: "xl" }} bg={"green.700"} />
+          <Avatar
+            size={{ md: "2xl", base: "xl" }}
+            bg={"green.700"}
+            src={previewImage ? URL.createObjectURL(previewImage) : ""}
+          />
         )}
 
         {user && (
