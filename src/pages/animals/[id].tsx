@@ -22,7 +22,6 @@ export default SingleAnimalBack;
 export async function getServerSideProps(context: any) {
  
   const id = context.req.url.substring(9)
-  console.log(id)
 
   const res = await prisma.animal.findUnique({
     where: {
