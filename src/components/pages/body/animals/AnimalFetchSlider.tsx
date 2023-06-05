@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Box,
@@ -113,24 +113,16 @@ const AnimalFetchSlider = ({ data }: Props) => {
     position: "top",
   });
 
-  useEffect(() => {
-    if (session?.user?.email != "admin@teste.com") {
-      setAdminSession(true);
-    }
-  }, [session]);
-
   function renderAdminSession(id: string) {
-    return (
-      <Link href={`animals/edit/${id}`}>
-        <Button
-          variant="solid"
-          colorScheme="red"
-          marginLeft={10}
-        >
-          Editar
-        </Button>
-      </Link>
-    );
+    if (session?.user?.email === "admin@teste.com") {
+      return (
+        <Link href={`animals/edit/${id}`}>
+          <Button variant="solid" colorScheme="red" marginLeft={10}>
+            Editar
+          </Button>
+        </Link>
+      );
+    }
   }
 
   async function handleSubmit(animalId: string) {
@@ -287,7 +279,7 @@ const AnimalFetchSlider = ({ data }: Props) => {
                       >
                         Apadrinhar
                       </Button>
-                      {adminSession && renderAdminSession(animalInfo.id)}
+                      {renderAdminSession(animalInfo.id)}
                     </CardBody>
                   </Card>
                 </Box>

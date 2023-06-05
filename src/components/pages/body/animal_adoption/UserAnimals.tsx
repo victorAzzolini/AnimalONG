@@ -110,7 +110,7 @@ const UserAnimals = () => {
           </Heading>
 
           {animals?.length == 0 && (
-            <Stack spacing={10} justifyContent={"center"} alignItems={"center"}>
+            <Stack spacing={10} justifyContent={"center"} alignItems={"center"} mb={10}>
               <Text fontWeight={600}>
                 Você ainda não possui animais apadrinhados...
               </Text>
