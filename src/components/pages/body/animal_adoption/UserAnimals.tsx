@@ -39,19 +39,6 @@ const cardVariants = {
   },
 };
 
-const cardVariantsTwo = {
-  offscreen: {
-    y: 300,
-  },
-  onscreen: {
-    y: 0,
-    transition: {
-      type: "spring",
-      duration: 2,
-    },
-  },
-};
-
 const UserAnimals = () => {
   const [animals, setAnimals] = useState<Animal[] | any>();
   const [animalId, setAnimalId] = useState<string>();
@@ -68,7 +55,7 @@ const UserAnimals = () => {
 
   async function deleteAnimal() {
     axios
-      .delete(`/api/deleteanimals?animalId=${animalId}`)
+      .delete(`/api/updateuseranimals?animalId=${animalId}`)
       .then((res) => {
         console.log(res);
         setAnimals(res.data.animalsIDs);

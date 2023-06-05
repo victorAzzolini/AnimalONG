@@ -4,7 +4,7 @@ import prisma from "@/libs/prismadb";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-const deleteAnimal = async (
+const updateUserAnimals = async (
   req: NextApiRequest,
   res: NextApiResponse<{
     data: { message: string | null, animals: string[] | null | any } | null;
@@ -79,4 +79,4 @@ const deleteAnimal = async (
   }
 };
 
-export default deleteAnimal;
+export default updateUserAnimals;

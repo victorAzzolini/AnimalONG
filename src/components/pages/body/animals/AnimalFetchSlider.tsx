@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Box,
@@ -30,6 +30,7 @@ import { MdPix } from "react-icons/md";
 import { Props } from "@/pages/animals";
 import Link from "next/link";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const cardVariants = {
   offscreen: {
@@ -103,12 +104,34 @@ const settings = {
 };
 
 const AnimalFetchSlider = ({ data }: Props) => {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
-  const [animalId, setAnimalId] = React.useState<string | null>();
+  const [slider, setSlider] = useState<Slider | null>(null);
+  const [animalId, setAnimalId] = useState<string | null>();
+  const [adminSession, setAdminSession] = useState(false);
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const { data: session, update } = useSession();
   const toast = useToast({
     position: "top",
   });
+
+  useEffect(() => {
+    if (session?.user?.email != "admin@teste.com") {
+      setAdminSession(true);
+    }
+  }, [session]);
+
+  function renderAdminSession(id: string) {
+    return (
+      <Link href={`animals/edit/${id}`}>
+        <Button
+          variant="solid"
+          colorScheme="red"
+          marginLeft={10}
+        >
+          Editar
+        </Button>
+      </Link>
+    );
+  }
 
   async function handleSubmit(animalId: string) {
     const updateAnimalId = {
@@ -255,7 +278,6 @@ const AnimalFetchSlider = ({ data }: Props) => {
                       </Link>
                       <Divider my={3} />
                       <Button
-                        key={animalInfo.id}
                         variant="solid"
                         colorScheme="green"
                         onClick={() => {
@@ -265,6 +287,7 @@ const AnimalFetchSlider = ({ data }: Props) => {
                       >
                         Apadrinhar
                       </Button>
+                      {adminSession && renderAdminSession(animalInfo.id)}
                     </CardBody>
                   </Card>
                 </Box>

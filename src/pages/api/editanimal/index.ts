@@ -1,26 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/libs/prismadb";
 
-const handler = async (
+const editAnimal = async (
   req: NextApiRequest,
   res: NextApiResponse<{
     data: {
-      message: string;
+      message: string | null;
     } | null;
     error: string | null;
   }>
 ) => {
-  if (req.method != "POST") {
-    res.setHeader("Allow", "POST");
-    res.status(401).json({
-      data: null,
-      error: "Método não permitido",
-    });
-    return;
+  if (req.method != "PATCH") {
+    res.setHeader("Allow", "PATCH");
+    res.status(401).json({ data: null, error: "Método não permitido" });
   }
 
   try {
-    const { name, age, description, resumeDescription, images }: any = req.body;
+    const { id, name, age, description, resumeDescription, images }: any =
+      req.body;
 
     if (!name) {
       res
@@ -79,14 +76,18 @@ const handler = async (
 
     const intAge = parseInt(age);
 
-    await prisma.animal.create({
+    const animal = await prisma.animal.update({
+      where: {
+        id: id,
+      },
       data: { name, intAge, description, resumeDescription, images },
     });
 
+    console.log(animal);
   } catch (error) {
     console.log(error);
     res.status(500).json({ data: null, error: "Internal Server Error" });
   }
 };
 
-export default handler;
+export default editAnimal
