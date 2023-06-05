@@ -22,8 +22,6 @@ const handler = async (
   try {
     const { name, age, description, resumeDescription, images }: any = req.body;
 
-    console.log(req.body);
-
     if (!name) {
       res
         .status(422)
