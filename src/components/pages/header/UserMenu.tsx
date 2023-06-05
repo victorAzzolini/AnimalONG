@@ -15,13 +15,9 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { User } from "@prisma/client";
 
-
 const UserMenu = () => {
-  const {data: session} = useSession()
-  const user = session?.user as User
-
-
-  
+  const { data: session } = useSession();
+  const user = session?.user as User;
 
   return (
     <Menu>
@@ -30,7 +26,7 @@ const UserMenu = () => {
           <Avatar
             size={{ md: "lg", base: "md" }}
             bg={"green.700"}
-            src={`uploads/images/${user?.images[0]}`}
+            src={`${user?.images[0]}`}
           />
         ) : (
           <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
@@ -46,7 +42,7 @@ const UserMenu = () => {
             <Avatar
               size={{ md: "lg", base: "md" }}
               bg={"green.700"}
-              src={`uploads/images/${user?.images[0]}`}
+              src={`${user?.images[0]}`}
             />
           ) : (
             <Avatar size={{ md: "lg", base: "md" }} bg={"green.700"} />
@@ -80,7 +76,7 @@ const UserMenu = () => {
           color={"forest.400"}
           fontSize={{ xl: "xl", md: "lg", base: "sm" }}
         >
-          <Link href={"/user"}>Account Settings</Link>
+          <Link href={"/user"}>Configurações de Usuário</Link>
         </MenuItem>
         <MenuDivider display={{ md: "none", base: "block" }} />
         <Link href={"/animals"}>

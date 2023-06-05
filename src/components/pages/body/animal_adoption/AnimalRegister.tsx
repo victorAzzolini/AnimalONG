@@ -22,6 +22,7 @@ interface Animal {
   name: String;
   age: Number;
   description: String;
+  resumeDescription: String;
   images: [];
 }
 
@@ -59,10 +60,6 @@ const AnimalRegister = () => {
   }
 
   function onFileChange(e: React.FormEvent<HTMLInputElement>) {
-    setAnimal({
-      ...animal,
-      images: Array.from((e.target as HTMLInputElement).files as FileList),
-    });
     setPreviewImage(
       Array.from((e.target as HTMLInputElement).files as FileList)
     );
@@ -72,49 +69,65 @@ const AnimalRegister = () => {
     e.preventDefault();
 
     const formData = new FormData();
+    formData.append("upload_preset", "ropx9bzn");
+    formData.append("api_key", "299813126812596");
 
-    console.log(previewImage)
+    let imagesUrls: string[] = [];
 
-    await Object.keys(animal).forEach((key) => {
-      if (key === "images") {
-        for (let i = 0; i < animal[key].length; i++) {
-          formData.append("images", animal[key][i]);
-        }
-      } else {
-        formData.append(key, animal[key]);
+    try {
+      for (const file of previewImage) {
+        formData.append("file", file);
+  
+        const res = await axios.post(
+          "https://api.cloudinary.com/v1_1/dajjv0sfx/image/upload",
+          formData
+        );
+  
+        imagesUrls.push(res.data.secure_url);
       }
-    });
 
-    await axios
-      .post("/api/animals/register", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        toast({
-          title: "Animal registrado com sucesso",
-          status: "success",
-          isClosable: true,
-        });
-        console.log(res.status);
-        setAnimal({
-          name: "",
-          age: "",
-          description: "",
-          resumeDescription: "",
-          images: [],
-        });
-        setPreviewImage([])
-      })
-      .catch((error) => {
-        console.log(error);
-        toast({
-          title: error.response.data.error,
-          status: "error",
-          isClosable: true,
-        });
-      });
+      console.log(imagesUrls);
+
+      const animalData = {
+        name: animal.name,
+        age: animal.age,
+        description: animal.description,
+        resumeDescription: animal.resumeDescription,
+        images: imagesUrls,
+      };
+
+      try {
+        console.log(animalData)
+        await axios
+          .post("/api/animals/register", animalData)
+          .then((res) => {
+            toast({
+              title: "Animal registrado com sucesso",
+              status: "success",
+              isClosable: true,
+            });
+            console.log(res.status);
+            setAnimal({
+              name: "",
+              age: "",
+              description: "",
+              resumeDescription: "",
+              images: [],
+            });
+            setPreviewImage([]);
+          })
+          .catch((error) => {
+            console.log(error);
+            toast({
+              title: error.response.data.error,
+              status: "error",
+              isClosable: true,
+            });
+          });
+      } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -270,7 +283,7 @@ const AnimalRegister = () => {
             </FormControl>
             <FormControl>
               <FormLabel fontSize={{ xl: "lg", md: "md", base: "sm" }}>
-                 Resumo da Descrição:
+                Resumo da Descrição:
               </FormLabel>
               <Textarea
                 h={{ base: "2vh", md: "10vh" }}

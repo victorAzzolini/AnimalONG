@@ -1,19 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { parseForm, FormidableError } from "@/libs/parse-form";
 import prisma from "@/libs/prismadb";
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<{
     data: {
       message: string;
-      url: string | string[];
     } | null;
     error: string | null;
   }>
@@ -27,15 +19,10 @@ const handler = async (
     return;
   }
 
-  let images: string[] = [];
-
-  //using formidable midware
   try {
-    const { fields, files } = await parseForm(req);
+    const { name, age, description, resumeDescription, images }: any = req.body;
 
-    console.log({ files, fields });
-
-    const { name, age, description, resumeDescription }: any  = fields;
+    console.log(req.body);
 
     if (!name) {
       res
@@ -67,7 +54,9 @@ const handler = async (
       return;
     }
 
-    if (Object.keys(files).length === 0) {
+    console.log(images);
+
+    if (images.length === 0) {
       res.status(422).json({
         data: null,
         error: "É necessario adicionar ao menos uma imagem válida",
@@ -75,7 +64,7 @@ const handler = async (
       return;
     }
 
-    if (Object.keys(files.images).length > 4) {
+    if (images.length > 3) {
       res.status(422).json({
         data: null,
         error: "Máximo de 4 imagens",
@@ -83,22 +72,9 @@ const handler = async (
       return;
     }
 
-    const file = files.images;
-
-    if (Array.isArray(file)) {
-      file.map((obj) => {
-        images.push(obj.newFilename);
-      });
-    } else {
-      images.push(file.newFilename);
-    }
-
-    let url = Array.isArray(file) ? file.map((f) => f.filepath) : file.filepath;
-
     res.status(200).json({
       data: {
         message: "Ok",
-        url,
       },
       error: null,
     });
@@ -106,19 +82,13 @@ const handler = async (
     const intAge = parseInt(age);
 
     const animal = await prisma.animal.create({
-      data: { name, intAge, description, resumeDescription ,images },
+      data: { name, intAge, description, resumeDescription, images },
     });
 
     console.log(animal);
   } catch (error) {
-    if (error instanceof FormidableError) {
-      res
-        .status(error.httpCode || 400)
-        .json({ data: null, error: error.message });
-    } else {
-      console.log(error);
-      res.status(500).json({ data: null, error: "Internal Server Error" });
-    }
+    console.log(error);
+    res.status(500).json({ data: null, error: "Internal Server Error" });
   }
 };
 

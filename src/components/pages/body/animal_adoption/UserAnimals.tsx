@@ -23,7 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { Animal } from "@prisma/client";
 import { motion } from "framer-motion";
-"react-icons/io";
+import Link from "next/link";
+("react-icons/io");
 
 const cardVariants = {
   offscreen: {
@@ -70,8 +71,8 @@ const UserAnimals = () => {
       .delete(`/api/deleteanimals?animalId=${animalId}`)
       .then((res) => {
         console.log(res);
-        setAnimals(res.data.animalsIDs)
-        onClose()
+        setAnimals(res.data.animalsIDs);
+        onClose();
       })
       .catch((err) => {
         console.log(err);
@@ -121,6 +122,31 @@ const UserAnimals = () => {
             </Text>
           </Heading>
 
+          {animals?.length == 0 && (
+            <Stack spacing={10} justifyContent={"center"} alignItems={"center"}>
+              <Text fontWeight={600}>
+                Você ainda não possui animais apadrinhados...
+              </Text>
+              <Link href={"/animals"}>
+                <Button
+                  colorScheme={"green"}
+                  bg={"green.400"}
+                  rounded={"full"}
+                  size={{ base: "lg" }}
+                  alignSelf={"center"}
+                  minW={"20%"}
+                  fontSize={{ base: "md", xl: "xl" }}
+                  px={{ base: 6, md: 8 }}
+                  _hover={{
+                    bg: "green.500",
+                  }}
+                >
+                  Conheça nossos Animais
+                </Button>
+              </Link>
+            </Stack>
+          )}
+
           {animals?.map((animalInfo: Animal) => (
             <>
               <Box
@@ -136,32 +162,36 @@ const UserAnimals = () => {
                   direction={{ base: "column", md: "row" }}
                   my={4}
                 >
-                  <Image
-                    src={`uploads/images/${animalInfo.images[0]}`}
-                    borderRadius={{ base: "md" }}
-                    boxSize={{ base: "220px", sm: "240px", md: "250px" }}
-                    alignSelf={"center"}
-                    m={{ base: 2 }}
-                  />
+                  <Link href={`animals/${animalInfo.id}`}>
+                    <Image
+                      src={`${animalInfo.images[0]}`}
+                      borderRadius={{ base: "md" }}
+                      boxSize={{ base: "220px", sm: "240px", md: "250px" }}
+                      alignSelf={"center"}
+                      m={{ base: 2 }}
+                    />
+                  </Link>
                   <CardBody>
-                    <Stack>
-                      <Heading
-                        fontSize={{
-                          base: "xl",
-                          md: "2xl",
-                          lg: "3xl",
-                          xl: "4xl",
-                        }}
-                      >
-                        {animalInfo.name}
-                      </Heading>
-                      <Text fontSize={{ base: "md" }} fontWeight={600}>
-                        {animalInfo.intAge} anos
-                      </Text>
-                      <Text fontSize={{ base: "sm" }} minH={{ xl: "210px" }}>
-                        {animalInfo.resumeDescription}
-                      </Text>
-                    </Stack>
+                    <Link href={`animals/${animalInfo.id}`}>
+                      <Stack>
+                        <Heading
+                          fontSize={{
+                            base: "xl",
+                            md: "2xl",
+                            lg: "3xl",
+                            xl: "4xl",
+                          }}
+                        >
+                          {animalInfo.name}
+                        </Heading>
+                        <Text fontSize={{ base: "md" }} fontWeight={600}>
+                          {animalInfo.intAge} anos
+                        </Text>
+                        <Text fontSize={{ base: "sm" }} minH={{ xl: "210px" }}>
+                          {animalInfo.resumeDescription}
+                        </Text>
+                      </Stack>
+                    </Link>
                     <Divider my={3} />
                     <Button
                       variant="solid"

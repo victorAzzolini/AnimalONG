@@ -19,6 +19,7 @@ const adoptions = async (
   const token = await getToken({ req, secret });
 
   const { id } = req.body;
+  console.log(req.body)
 
   const checkIfUserHasAnimal = await prisma.user.findFirst({
     where: {

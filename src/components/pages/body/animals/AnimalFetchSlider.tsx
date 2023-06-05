@@ -212,24 +212,25 @@ const AnimalFetchSlider = ({ data }: Props) => {
                   position={"relative"}
                   m={"0 auto"}
                 >
-                  <Link  href={`animals/${animalInfo.id}`}>
-                    <Card
-                      
-                      id={animalInfo.id}
-                      direction={{ base: "column", md: "row", xl: "column" }}
-                      my={4}
-                      _hover={{
-                        transform: "scale(1.02)"
-                      }}
-                    >
+                  <Card
+                    id={animalInfo.id}
+                    direction={{ base: "column", md: "row", xl: "column" }}
+                    my={4}
+                    _hover={{
+                      transform: "scale(1.02)",
+                    }}
+                  >
+                    <Link href={`animals/${animalInfo.id}`}>
                       <Image
-                        src={`uploads/images/${animalInfo.images[0]}`}
+                        src={`${animalInfo.images[0]}`}
                         borderRadius={{ base: "md" }}
                         boxSize={{ base: "220px", sm: "240px", md: "250px" }}
                         alignSelf={"center"}
                         m={{ base: 2 }}
                       />
-                      <CardBody key={animalInfo.id}>
+                    </Link>
+                    <CardBody key={animalInfo.id}>
+                      <Link href={`animals/${animalInfo.id}`}>
                         <Stack>
                           <Heading
                             fontSize={{
@@ -251,21 +252,21 @@ const AnimalFetchSlider = ({ data }: Props) => {
                             {animalInfo.resumeDescription}
                           </Text>
                         </Stack>
-                        <Divider my={3} />
-                        <Button
-                          key={animalInfo.id}
-                          variant="solid"
-                          colorScheme="green"
-                          onClick={() => {
-                            setAnimalId(animalInfo.id);
-                            onOpen();
-                          }}
-                        >
-                          Apadrinhar
-                        </Button>
-                      </CardBody>
-                    </Card>
-                  </Link>
+                      </Link>
+                      <Divider my={3} />
+                      <Button
+                        key={animalInfo.id}
+                        variant="solid"
+                        colorScheme="green"
+                        onClick={() => {
+                          setAnimalId(animalInfo.id);
+                          onOpen();
+                        }}
+                      >
+                        Apadrinhar
+                      </Button>
+                    </CardBody>
+                  </Card>
                 </Box>
               </React.Fragment>
             ))}
