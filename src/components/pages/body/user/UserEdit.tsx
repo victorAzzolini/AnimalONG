@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
@@ -18,19 +18,17 @@ import {
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { User } from "@prisma/client";
+import { useRouter } from "next/router";
 
-const UserEdit = () => {
+const UserEdit = (userEdit: User) => {
   const [user, setUser] = useState<User | any>({});
   const [previewImage, setPreviewImage] = useState<string | File[] | any>();
-  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { data: session, update } = useSession();
 
-  useEffect(() => {
-    axios.get("api/getuser").then((res) => {
-      setUser(res.data);
-    });
-    console.log(user);
-  }, [session]);
+  useMemo(() => {
+    setUser(userEdit)
+  }, [session])
 
   const toast = useToast({
     position: "top",
@@ -86,6 +84,7 @@ const UserEdit = () => {
             isClosable: true,
           });
           update(user);
+          setUser(user)
         })
         .catch((error) => {
           console.log(error);

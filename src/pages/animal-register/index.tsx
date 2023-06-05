@@ -2,7 +2,6 @@ import React from 'react'
 import AnimalRegister from '@/components/pages/body/animal_adoption/AnimalRegister'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]'
-import { redirect } from 'next/dist/server/api-utils'
 import { User } from '@prisma/client'
 
 const AnimalRegisterBack = ({user} : {user: User}) => {
