@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
 import Slider from "react-slick";
+import { User } from "@prisma/client";
 
 interface Animal {
   name: String;
@@ -34,7 +35,7 @@ const settings = {
   dots: true,
 };
 
-const AnimalRegister = () => {
+const AnimalRegister = (user: User) => {
   const [animal, setAnimal] = useState<Animal | any>({
     name: "",
     age: "",

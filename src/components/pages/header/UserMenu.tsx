@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { User } from "@prisma/client";
 import Link from "next/link";
+
 import {
   Menu,
   MenuButton,
@@ -11,13 +14,38 @@ import {
   Stack,
   Avatar,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
-import { signOut, useSession } from "next-auth/react";
-import { User } from "@prisma/client";
 
 const UserMenu = () => {
   const { data: session } = useSession();
+  const [adminSession, setAdminSession] = useState(false);
   const user = session?.user as User;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session?.user?.email === "admin@teste.com") {
+      setAdminSession(true);
+      return
+    }
+
+    if (!session) {
+      router.push('/')
+    }
+  }, []);
+
+  function renderAdminSession() {
+    return (
+      <Link href={"/animal-register"}>
+        <MenuItem
+          color={"forest.400"}
+          fontSize={{ xl: "xl", md: "lg", base: "sm" }}
+        >
+          Registro de Animal
+        </MenuItem>
+      </Link>
+    );
+  }
 
   return (
     <Menu>
@@ -88,11 +116,15 @@ const UserMenu = () => {
             Animals
           </MenuItem>
         </Link>
+        {adminSession && renderAdminSession()}
         <MenuDivider />
         <MenuItem
           color={"forest.400"}
           fontSize={{ xl: "xl", md: "lg", base: "sm" }}
-          onClick={() => signOut()}
+          onClick={async() => {
+            await router.push('/')
+            signOut()
+          }}
         >
           Sing Out
         </MenuItem>
