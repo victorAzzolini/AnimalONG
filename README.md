@@ -5,12 +5,12 @@ Um site que tem como objetivo replicar uma página de uma ONG de resgate de anim
 <br><br/>
 ## Índice
 
-- <a href=#funcionalidades>Funcionalidades do Projeto</a>
-- <a href=#layout>Layout</a>
-- <a href=#rodar>Como rodar o projeto</a>
-- <a href=#tecnologias-utilizadas>Tecnologias Utilizadas</a>
-- <a href=#autor>Autor</a>
-- <a href=#proximos-passos>Próximos Passos</a>
+- <a href=#-funcionalidades>Funcionalidades do Projeto</a>
+- <a href=#-layout>Layout</a>
+- <a href=#-rodar>Como rodar o projeto</a>
+- <a href=#-tecnologias-utilizadas>Tecnologias Utilizadas</a>
+- <a href=#-autor>Autor</a>
+- <a href=#-proximos-passos>Próximos Passos</a>
 <br><br/>
 ## ⚙️Funcionalidades 
 
